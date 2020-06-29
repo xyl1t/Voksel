@@ -1,2 +1,3 @@
-# DM me in discord if you are reading this (especially you Cyanhunter)
+# Voksel
+Trying to copy the original comanche game.
 
