@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
     SDL_Init(SDL_INIT_EVERYTHING);
 
     Display display(800, 600, "Voksel");
-    Game game(display, { 0, 0, 0.f }, 127);
+    Game game(display, { 300, 200, 100.f }, 100);
 
     while(!display.IsClosed()) {
 

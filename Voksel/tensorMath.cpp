@@ -742,7 +742,7 @@ tem::mat4x4 tem::mat4x4::operator/(const float other) {
 
 
 /*
- tem::vec3& tem::vec3::operator=(const tem::vec3& other) { }
+tem::vec3& tem::vec3::operator=(const tem::vec3& other) { }
 tem::vec3 tem::vec3::operator+(const tem::vec3& other) { }
 tem::vec3 tem::vec3::operator-(const tem::vec3& other) { }
 tem::vec3 tem::vec3::operator*(const tem::vec3& other) { }

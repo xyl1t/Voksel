@@ -7,6 +7,7 @@
 //
 
 #include "game.hpp"
+#include <SDL2/SDL.h>
 #include <iostream>
 #include <stb/stb_image.h>
 #include <cmath>
@@ -71,10 +72,16 @@ void Game::Update() {
         playerPosition.y -= -cosAngle;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_LEFT)) {
-        playerAngle -= M_PI / 135.f;
+        playerAngle -= M_PI / 45.f;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_RIGHT)) {
-        playerAngle += M_PI / 135.f;
+        playerAngle += M_PI / 45.f;
+    }
+    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_W)) {
+        playerPosition.z += 1;
+    }
+    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_Q)) {
+        playerPosition.z -= 1;
     }
 
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_1)) {
@@ -104,18 +111,24 @@ void Game::Update() {
 
     display.Clear();
     
+//    for (int i = 0; i < display.GetWidth(); i++) {
+//        for (int j = 0; j < display.GetHeight(); j++) {
+//            display.SetPixel(i, j, (RGB) {heightmap[i + j * mapWidth],heightmap[i + j * mapWidth],heightmap[i + j * mapWidth]});
+//        }
+//    }
     
-    for (int i = distance; i >= 0; i--) {
+    
+    for (int i = distance; i > 0; i--) {
 //        vec2 leftPoint = { playerPosition.x - i, playerPosition.y - i};
 //        vec2 rightPoint = { playerPosition.x + i, playerPosition.y - i};
 
         vec2 newLeftPoint = {
-            -i * cosAngle + -i * (-sinAngle),
-            -i * sinAngle + -i * cosAngle
+            (-i * cosAngle + -i * (-sinAngle)) + playerPosition.x,
+            (-i * sinAngle + -i * cosAngle)+ playerPosition.y
         };
         vec2 newRightPoint = {
-            +i * cosAngle + -i * (-sinAngle),
-            +i * sinAngle + -i * cosAngle
+            (+i * cosAngle + -i * (-sinAngle))+ playerPosition.x,
+            (+i * sinAngle + -i * cosAngle)+ playerPosition.y
         };
         
         float dx = (newRightPoint.x - newLeftPoint.x) / display.GetWidth();
@@ -126,15 +139,30 @@ void Game::Update() {
         if(dx == 0 && dy == 0) continue;
         
         
-        RGBA fovColor = {0x8a, 0x8a, 0x8a, 0xff};
-//        if(i % 2)
+
         for(int j = 0; j < display.GetWidth(); j++) {
-            display.SetPixel(newLeftPoint.x + playerPosition.x, newLeftPoint.y + playerPosition.y, colormap[(int)(newLeftPoint.x + playerPosition.x)+ (int)(newLeftPoint.y + playerPosition.y) * mapWidth]);
+//            display.SetPixel(
+//                             newLeftPoint.x,
+//                             newLeftPoint.y, (RGB) {
+//                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth],
+//                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth],
+//                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]});
+//            int a =(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth;
+            display.SetPixel(
+                             newLeftPoint.x,
+                             newLeftPoint.y, colormap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]);
+            
             newLeftPoint.x+=dx;
             newLeftPoint.y+=dy;
-//            c = (i / 100.f) * 255;
+            
+            float h = heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth];
+            
+            float height_on_screen = (float)((playerPosition.z - h) * 100) / (float)i * 3.f + 100;
+            
+            drawLineDown(j, height_on_screen, colormap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]);
+//            std::cout << h << std::endl;
         }
-        
+
 //        display.SetPixel(newLeftPoint.x + playerPosition.x, newLeftPoint.y + playerPosition.y, fovColor);
 //        display.SetPixel(newRightPoint.x + playerPosition.x, newRightPoint.y + playerPosition.y, fovColor);
     }
@@ -142,7 +170,7 @@ void Game::Update() {
     display.Update();
 }
 
-void Game::drawLineDown(int x, int y, RGBA color) {
+void Game::drawLineDown(int x, int y, RGB color) {
     for(int i = 0; i < display.GetHeight() - y; i++) {
         display.SetPixel(x, y + i, color);
     }
