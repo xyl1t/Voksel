@@ -168,12 +168,13 @@ void Game::Update() {
             float h = heightmap[((int)abs(leftPoint.x) % mapWidth) + ((int)abs(leftPoint.y) % mapHeight * mapWidth)];
             
             float height_on_screen = (float)((playerPosition.z - h)) / (float)i * 400.0f + playerAnglePitch;
-            
+
+            float distance = sqrt(i * i + playerPosition.z * playerPosition.z);
             
 //            float f = (end - i) / (end - start);
             float density = 0.0015f;
             float gradient = 4;
-            float f = 1.f / std::pow(EulerConstant, std::pow((i * density), gradient));
+            float f = 1.f / std::pow(EulerConstant, std::pow((distance * density), gradient));
             f = (f < 0) ? 0 : f;
             f = (f > 1) ? 1 : f;
             
