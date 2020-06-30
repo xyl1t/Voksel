@@ -25,9 +25,11 @@ public:
     
 private:
     
-    void drawLineDown(int x, int y, RGB color);
+    void drawLineDown(int x, int y, float z, RGB color);
     vec3 playerPosition;
-    float playerAngle;
+    float playerAngleYaw;
+    float playerAnglePitch;
+    float playerAngleRoll;
     int distance;
     Display& display;
     RGB* colormap;
@@ -35,7 +37,7 @@ private:
     int mapWidth;
     int mapHeight;
     
-    float* yBuffer;
+    float* zBuffer;
     int minimapWidth;    //= 128;
     int minimapHeight;   //= 128;
     float pixelWidth;      //= mapWidth / minimapWidth;

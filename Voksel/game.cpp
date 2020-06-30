@@ -20,7 +20,7 @@ static float util_lerp(float a, float b, float t) {
     return a + (b - a) * t;
 }
 
-Game::Game(Display& display, vec3 spawnPoint, int distance) : display(display), playerPosition(spawnPoint), playerAngle(45.f * M_PI/180), distance(distance), minimapWidth(128), minimapHeight(128) {
+Game::Game(Display& display, vec3 spawnPoint, int distance) : display(display), playerPosition(spawnPoint), playerAngleYaw(45.f * M_PI/180), distance(distance), minimapWidth(128), minimapHeight(128) {
     int nrChannels;
     uint8_t* rawColormap = stbi_load("/Users/maratisaw/Home/Documents/Programming/C++/Projects/SDL/Voksel/Voksel/res/C1W.png", &mapWidth, &mapHeight, &nrChannels, 0);
     uint8_t* rawHeightmap = stbi_load("/Users/maratisaw/Home/Documents/Programming/C++/Projects/SDL/Voksel/Voksel/res/D1.png", &mapWidth, &mapHeight, &nrChannels, 0);
@@ -33,6 +33,10 @@ Game::Game(Display& display, vec3 spawnPoint, int distance) : display(display), 
     
     colormap = new RGB[mapWidth * mapHeight];
     heightmap = new uint8_t[mapWidth * mapHeight];
+    zBuffer = new float[mapWidth];
+    for (int i = 0; i < mapWidth; i++) {
+        zBuffer[i] = display.GetHeight();
+    }
     
     for(int i = 0; i < mapWidth * mapHeight; i++) {
         colormap[i] = { rawColormap[i * 3 + 0], rawColormap[i * 3 + 1], rawColormap[i * 3 + 2] };
@@ -48,6 +52,7 @@ Game::Game(Display& display, vec3 spawnPoint, int distance) : display(display), 
 Game::~Game() {
     delete[] colormap;
     delete[] heightmap;
+    delete[] zBuffer;
 }
 
 /*
@@ -60,8 +65,8 @@ Game::~Game() {
 
 void Game::Update() {
     
-    float cosAngle = cos(playerAngle);
-    float sinAngle = sin(playerAngle);
+    float cosAngle = cos(playerAngleYaw);
+    float sinAngle = sin(playerAngleYaw);
     
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_UP)) {
         playerPosition.x += sinAngle;
@@ -72,10 +77,10 @@ void Game::Update() {
         playerPosition.y -= -cosAngle;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_LEFT)) {
-        playerAngle -= M_PI / 45.f;
+        playerAngleYaw -= M_PI / 45.f;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_RIGHT)) {
-        playerAngle += M_PI / 45.f;
+        playerAngleYaw += M_PI / 45.f;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_W)) {
         playerPosition.z += 1;
@@ -118,7 +123,11 @@ void Game::Update() {
 //    }
     
     
-    for (int i = distance; i > 0; i--) {
+    for (int i = 0; i < mapWidth; i++) {
+        zBuffer[i] = display.GetHeight();
+    }
+    float di = 1.f;
+    for (int i = 1; i < distance; i += (di), di += 0.05f) {
 //        vec2 leftPoint = { playerPosition.x - i, playerPosition.y - i};
 //        vec2 rightPoint = { playerPosition.x + i, playerPosition.y - i};
 
@@ -134,11 +143,7 @@ void Game::Update() {
         float dx = (newRightPoint.x - newLeftPoint.x) / display.GetWidth();
         float dy = (newRightPoint.y - newLeftPoint.y) / display.GetWidth();
         
-        
-        
         if(dx == 0 && dy == 0) continue;
-        
-        
 
         for(int j = 0; j < display.GetWidth(); j++) {
 //            display.SetPixel(
@@ -149,20 +154,22 @@ void Game::Update() {
 //                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]});
 //            int a =(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth;
             display.SetPixel(
-                             newLeftPoint.x,
-                             newLeftPoint.y, colormap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]);
+                             newLeftPoint.x / 3,
+                             newLeftPoint.y / 3, colormap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]);
             
-            newLeftPoint.x+=dx;
-            newLeftPoint.y+=dy;
+            newLeftPoint.x += dx;
+            newLeftPoint.y += dy;
             
             float h = heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth];
             
-            float height_on_screen = (float)((playerPosition.z - h) * 100) / (float)i * 3.f + 100;
-            
-            drawLineDown(j, height_on_screen, colormap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]);
-//            std::cout << h << std::endl;
-        }
+            float height_on_screen = (float)((playerPosition.z - h) * 100) / (float)i * 2.5f + 100;
+            drawLineDown(j, height_on_screen, zBuffer[j], colormap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]);
+            if(height_on_screen < zBuffer[j]) {
+                zBuffer[j] = height_on_screen;
+            }
 
+        }
+        
 //        display.SetPixel(newLeftPoint.x + playerPosition.x, newLeftPoint.y + playerPosition.y, fovColor);
 //        display.SetPixel(newRightPoint.x + playerPosition.x, newRightPoint.y + playerPosition.y, fovColor);
     }
@@ -170,8 +177,9 @@ void Game::Update() {
     display.Update();
 }
 
-void Game::drawLineDown(int x, int y, RGB color) {
+void Game::drawLineDown(int x, int y, float z, RGB color) {
     for(int i = 0; i < display.GetHeight() - y; i++) {
+        if(y + i > z) return;
         display.SetPixel(x, y + i, color);
     }
 }
