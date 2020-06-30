@@ -68,7 +68,9 @@ void Game::Update() {
     float cosAngle = cos(playerAngleYaw);
     float sinAngle = sin(playerAngleYaw);
     
-
+    if(playerPosition.z <= heightmap[((int)abs(playerPosition.x) % mapWidth) + ((int)abs(playerPosition.y) % mapHeight * mapWidth)] + 10) {
+        playerPosition.z = heightmap[((int)abs(playerPosition.x) % mapWidth) + ((int)abs(playerPosition.y) % mapHeight * mapWidth)] + 10;
+    }
     
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_W)) {
         playerPosition.x += sinAngle * 4;
