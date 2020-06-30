@@ -63,6 +63,14 @@ void Display::Update() {
 void Display::Clear() {
     memset(this->pixels, 0, width * height * sizeof(uint32_t));
 }
+void Display::Clear(RGB color) {
+    for (int i = 0; i < width*height; i++)
+        pixels[i] = color.GetUint32();
+}
+void Display::Clear(RGBA color) {
+    for (int i = 0; i < width*height; i++)
+        pixels[i] = color.GetUint32();
+}
 
 void Display::Abort() {
     isClosed = true;

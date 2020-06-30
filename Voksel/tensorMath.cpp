@@ -28,10 +28,9 @@ tem::vec2& tem::vec2::operator-=(const tem::vec2& other) {
     this->y -= other.y;
     return *this;
 }
-tem::vec2& tem::vec2::operator*=(const float other) {
-    this->x *= other;
-    this->y *= other;
-    return *this;
+float tem::vec2::operator^=(const vec2& other) {
+    float crossValue = this->x * other.y - other.x * this->y;
+    return crossValue;
 }
 tem::vec2& tem::vec2::operator/=(const float other) {
     this->x /= other;
@@ -44,10 +43,13 @@ tem::vec2 tem::vec2::operator+(const tem::vec2& other) {
 tem::vec2 tem::vec2::operator-(const tem::vec2& other) {
     return tem::vec2 { this->x - other.x, this->y - other.y };
 }
+float tem::vec2::operator*(const tem::vec2& other) {
+    return this->x * other.x + this->y * other.y;
+}
 tem::vec2 tem::vec2::operator*(const float other) {
     return tem::vec2 { this->x * other, this->y * other };
 }
-float tem::vec2::operator*(const tem::vec2& other) {
+float tem::vec2::operator^(const tem::vec2& other) {
     return this->x * other.x + this->y * other.y;
 }
 tem::vec2 tem::vec2::operator/(const float other) {
@@ -81,6 +83,10 @@ tem::vec3& tem::vec3::operator*=(const float other) {
     this->z *= other;
     return *this;
 }
+tem::vec3& tem::vec3::operator^=(const tem::vec3& other) {
+    *this = *this ^ other;
+    return *this;
+}
 tem::vec3& tem::vec3::operator/=(const float other) {
     this->x /= other;
     this->y /= other;
@@ -98,6 +104,9 @@ tem::vec3 tem::vec3::operator*(const float other) {
 }
 float tem::vec3::operator*(const tem::vec3& other) {
     return this->x * other.x + this->y * other.y + this->z * other.z;
+}
+tem::vec3 tem::vec3::operator^(const tem::vec3& other) {
+    return { this->y * other.z - this->z * other.y, this->z * other.x - this->x * other.z, this->x * other.y - this->y * other.x };
 }
 tem::vec3 tem::vec3::operator/(const float other) {
     return tem::vec3 { this->x / other, this->y / other, this->z / other };
@@ -147,11 +156,11 @@ tem::vec4 tem::vec4::operator+(const tem::vec4& other) {
 tem::vec4 tem::vec4::operator-(const tem::vec4& other) {
     return tem::vec4 { this->x - other.x, this->y - other.y, this->z - other.z, this->w - other.w };
 }
-tem::vec4 tem::vec4::operator*(const float other) {
-    return tem::vec4 { this->x * other, this->y * other, this->z * other, this->w * other };
-}
 float tem::vec4::operator*(const tem::vec4& other) {
     return this->x * other.x + this->y * other.y + this->z * other.z + this->w * other.w;
+}
+tem::vec4 tem::vec4::operator*(const float other) {
+    return tem::vec4 { this->x * other, this->y * other, this->z * other, this->w * other };
 }
 tem::vec4 tem::vec4::operator/(const float other) {
     return tem::vec4 { this->x / other, this->y / other, this->z / other, this->w / other };

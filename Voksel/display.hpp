@@ -21,13 +21,16 @@ public:
     
     void Update();
     void Clear();
+    void Clear(RGB color);
+    void Clear(RGBA color);
     void Abort();
     
     inline void SetPixel(int x, int y, RGBA color) {
         this->pixels[x + y * this->width] = color.GetUint32();
     }
     inline void SetPixel(int x, int y, RGB color) {
-        this->pixels[x + y * this->width] = color.GetUint32();
+        if(x >= 0 && y >= 0 && x < width && y < height)
+            this->pixels[x + y * this->width] = color.GetUint32();
     }
     inline bool IsInit() {
         return isInit;

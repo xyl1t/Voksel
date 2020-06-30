@@ -28,10 +28,11 @@ namespace tem {
         vec2& operator=(const vec2& other);
         vec2& operator+=(const vec2& other);
         vec2& operator-=(const vec2& other);
-        vec2& operator*=(const float other);
+        float operator^=(const vec2& other);
         vec2& operator/=(const float other);
         vec2 operator+(const vec2& other);
         vec2 operator-(const vec2& other);
+        float operator^(const vec2& other);
         float operator*(const vec2& other);
         vec2 operator*(const float other);
         vec2 operator/(const float other);
@@ -49,10 +50,13 @@ namespace tem {
         vec3& operator=(const vec3& other);
         vec3& operator+=(const vec3& other);
         vec3& operator-=(const vec3& other);
+        vec3& operator^=(const vec3& other);
+        vec3& operator*=(const vec3& other);
         vec3& operator*=(const float other);
         vec3& operator/=(const float other);
         vec3 operator+(const vec3& other);
         vec3 operator-(const vec3& other);
+        vec3 operator^(const vec3& other);
         float operator*(const vec3& other);
         vec3 operator*(const float other);
         vec3 operator/(const float other);
@@ -71,6 +75,7 @@ namespace tem {
         vec4& operator=(const vec4& other);
         vec4& operator+=(const vec4& other);
         vec4& operator-=(const vec4& other);
+        vec4& operator*=(const vec4& other);
         vec4& operator*=(const float other);
         vec4& operator/=(const float other);
         vec4 operator+(const vec4& other);
