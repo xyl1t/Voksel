@@ -20,7 +20,7 @@ static float util_lerp(float a, float b, float t) {
     return a + (b - a) * t;
 }
 
-Game::Game(Display& display, vec3 spawnPoint, int distance) : display(display), playerPosition(spawnPoint), playerAngleYaw(45.f * M_PI/180), playerAnglePitch(100), distance(distance), minimapWidth(128), minimapHeight(128) {
+Game::Game(Display& display, vec3 spawnPoint, int distance) : display(display), playerPosition(spawnPoint), playerAngleYaw(135.f * M_PI/180), playerAnglePitch(100), distance(distance), minimapWidth(128), minimapHeight(128) {
     int nrChannels;
     uint8_t* rawColormap = stbi_load("/Users/maratisaw/Home/Documents/Programming/C++/Projects/SDL/Voksel/Voksel/res/C1W.png", &mapWidth, &mapHeight, &nrChannels, 0);
     uint8_t* rawHeightmap = stbi_load("/Users/maratisaw/Home/Documents/Programming/C++/Projects/SDL/Voksel/Voksel/res/D1.png", &mapWidth, &mapHeight, &nrChannels, 0);
@@ -128,7 +128,7 @@ void Game::Update() {
     
     display.Clear(RGB{ 0x69, 0xA5, 0xFC });
 
-    float start = 800;
+    float start = 0;
     float end = distance;
     
     for (int i = 0; i < mapWidth; i++) {
@@ -169,9 +169,14 @@ void Game::Update() {
             
             float height_on_screen = (float)((playerPosition.z - h)) / (float)i * 400.0f + playerAnglePitch;
             
-            float f = (end - i) / (end - start);
+            
+//            float f = (end - i) / (end - start);
+            float density = 0.0015f;
+            float gradient = 4;
+            float f = 1.f / std::pow(EulerConstant, std::pow((i * density), gradient));
             f = (f < 0) ? 0 : f;
             f = (f > 1) ? 1 : f;
+            
             RGB groundColor = colormap[((int)abs(leftPoint.x) % mapWidth) + ((int)abs(leftPoint.y) % mapHeight * mapWidth)];
             RGB skyColor = { 0x69, 0xA5, 0xFC };
             RGB result;

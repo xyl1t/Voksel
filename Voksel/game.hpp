@@ -12,6 +12,7 @@
 #include "color.hpp"
 #include "display.hpp"
 #include "tensorMath.hpp"
+#include <cmath>
 using namespace tem;
 
 class Game {
@@ -42,6 +43,8 @@ private:
     int minimapHeight;   //= 128;
     float pixelWidth;      //= mapWidth / minimapWidth;
     float pixelHeight;     //= mapHeight / minimapHeight;
+    
+    static constexpr float EulerConstant = 2.71828182845904523536028747135266249775724709369995f;
 };
 
 #endif /* GAME_HPP */
