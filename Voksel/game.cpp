@@ -68,25 +68,51 @@ void Game::Update() {
     float cosAngle = cos(playerAngleYaw);
     float sinAngle = sin(playerAngleYaw);
     
+    if(tiltFront > -0.01 && tiltFront < 0.01) tiltFront = 0;
+    if(tiltSide > -0.1 && tiltSide < 0.1) tiltSide = 0;
     
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_W)) {
-        playerPosition.x += sinAngle * 3;
-        playerPosition.y += -cosAngle * 3;
+        if(tiltFront < 1) {
+            tiltFront += .1f;
+        }
+    }
+    else if(tiltFront > 0) {
+        tiltFront -= .1f;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_S)) {
-        playerPosition.x -= sinAngle * 3;
-        playerPosition.y -= -cosAngle * 3;
+        if(abs(tiltFront) < 1) {
+            tiltFront -= 0.1f;
+        }
     }
+    else if(tiltFront < 0) {
+        tiltFront += .1f;
+    }
+    playerPosition.x += sinAngle * 3 * tiltFront;
+    playerPosition.y += -cosAngle * 3 * tiltFront;
+
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_A)) {
-        playerAngleYaw -= M_PI / 45.f;
+        playerAngleYaw -= M_PI / 90.f;
+        if(tiltSide < 1)
+            tiltSide += .1f;
+    }
+    else if(tiltSide > 0) {
+        tiltSide -= .1f;
+        playerAngleYaw -= M_PI / 90.f * abs(tiltSide) / 1;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_D)) {
-        playerAngleYaw += M_PI / 45.f;
+        playerAngleYaw += M_PI / 90.f;
+        if(abs(tiltSide) < 1)
+            tiltSide -= .1f;
     }
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_R)) {
+    else if(tiltSide < 0) {
+        tiltSide += .1f;
+        playerAngleYaw += M_PI / 90.f * abs(tiltSide) / 1;
+    }
+    
+    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_SPACE)) {
         playerPosition.z += 2;
     }
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_F)) {
+    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_LSHIFT)) {
         playerPosition.z -= 2;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_Q)) {
@@ -167,7 +193,7 @@ void Game::Update() {
             
             float h = heightmap[((int)abs(leftPoint.x) % mapWidth) + ((int)abs(leftPoint.y) % mapHeight * mapWidth)];
             
-            float height_on_screen = (float)((playerPosition.z - h)) / (float)i * 400.0f + playerAnglePitch;
+            float height_on_screen = (float)((playerPosition.z - h)) / (float)i * 300.0f + 100 * -tiltFront/2 + playerAnglePitch;
 
             float distance = sqrt(i * i + playerPosition.z * playerPosition.z);
             
@@ -185,10 +211,18 @@ void Game::Update() {
             result.g = util_lerp(skyColor.g, groundColor.g, f);
             result.b = util_lerp(skyColor.b, groundColor.b, f);
             
-            drawLineDown(j, height_on_screen, zBuffer[j], result);
+            /*
+             * tilt screen (roll):
+             * height_on_screen - j / 10
+             * or
+             * height_on_screen + j / 10
+             */
             
-            if(height_on_screen < zBuffer[j]) {
-                zBuffer[j] = height_on_screen;
+            
+            drawLineDown(j, height_on_screen + (j - display.GetWidth() / 2) / 10 * tiltSide, zBuffer[j], result);
+            
+            if(height_on_screen + (j - display.GetWidth() / 2) / 10 * tiltSide < zBuffer[j]) {
+                zBuffer[j] = height_on_screen + (j - display.GetWidth() / 2) / 10 * tiltSide;
             }
         }
     }

@@ -38,6 +38,9 @@ private:
     int mapWidth;
     int mapHeight;
     
+    float tiltFront = 0;
+    float tiltSide = 0;
+    
     float* zBuffer;
     int minimapWidth;    //= 128;
     int minimapHeight;   //= 128;
