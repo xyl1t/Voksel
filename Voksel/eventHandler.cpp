@@ -8,7 +8,7 @@
 
 #include "eventHandler.hpp"
 
-#include <iostream>
+#include <cstring>
 
 
 EventHandler::EventHandler():mouseX(0),mouseY(0),keys(nullptr) {
@@ -26,8 +26,6 @@ EventHandler::~EventHandler() {
 }
 
 void EventHandler::Update() {
-    memcpy(prevKeys, keys, 284 * sizeof(uint8_t));
-
     mouseXRel = 0;
     mouseYRel = 0;
     
@@ -39,7 +37,9 @@ void EventHandler::Update() {
             mouseYRel = event.motion.yrel;
         }
     }
-    
+
+    SDL_PumpEvents();
+    memcpy(prevKeys, keys, 284 * sizeof(uint8_t));
     keys = (uint8_t*)SDL_GetKeyboardState(nullptr);
     
     isLeftMouseDown = SDL_GetMouseState(&mouseX, &mouseY) & SDL_BUTTON(SDL_BUTTON_LEFT);
@@ -47,32 +47,20 @@ void EventHandler::Update() {
     isMiddleMouseDown = SDL_GetMouseState(&mouseX, &mouseY) & SDL_BUTTON(SDL_BUTTON_MIDDLE);
 }
 
-bool EventHandler::IsKeyDown(int key) {
-    SDL_PumpEvents();
-    memcpy(prevKeys, keys, 284 * sizeof(uint8_t));
-    keys = (uint8_t*)SDL_GetKeyboardState(nullptr);
-    
+bool EventHandler::IsKeyDown(int key) const {
     return (keys[key]);
 }
 
-bool EventHandler::IsKeyUp(int key) {
-    SDL_PumpEvents();
-    memcpy(prevKeys, keys, 284 * sizeof(uint8_t));
-    keys = (uint8_t*)SDL_GetKeyboardState(nullptr);
-    
+bool EventHandler::IsKeyUp(int key) const {
     return !(keys[key]);
 }
 
-bool EventHandler::IsKeyPressed(int key) {
-    SDL_PumpEvents();
-    memcpy(prevKeys, keys, 284 * sizeof(uint8_t));
-    keys = (uint8_t*)SDL_GetKeyboardState(nullptr);
-    
+bool EventHandler::IsKeyPressed(int key) const {
     return (!prevKeys[key] && keys[key]);
 }
 
 
-bool EventHandler::IsEvent(uint32_t eventType) {
+bool EventHandler::IsEvent(uint32_t eventType) const {
     for (int i = 0; i < 16; i++) {
         if(this->eventType[i] == eventType)
             return true;

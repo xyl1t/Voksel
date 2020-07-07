@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB123AB324B50EEA0031CA35 /* gameEventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB123AB124B50EEA0031CA35 /* gameEventHandler.cpp */; };
 		FB233E5624AC9D9A00FD4748 /* player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB233E5424AC9D9A00FD4748 /* player.cpp */; };
 		FB28A24524B0818900527044 /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB28A24324B0818900527044 /* renderer.cpp */; };
 		FB3642E624AF5FCD001F479B /* libSDL2main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB3642E324AF5FCC001F479B /* libSDL2main.a */; };
@@ -37,6 +38,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FB123AB124B50EEA0031CA35 /* gameEventHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gameEventHandler.cpp; sourceTree = "<group>"; };
+		FB123AB224B50EEA0031CA35 /* gameEventHandler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gameEventHandler.hpp; sourceTree = "<group>"; };
 		FB233E5424AC9D9A00FD4748 /* player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = player.cpp; sourceTree = "<group>"; };
 		FB233E5524AC9D9A00FD4748 /* player.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = player.hpp; sourceTree = "<group>"; };
 		FB28A24324B0818900527044 /* renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = renderer.cpp; sourceTree = "<group>"; };
@@ -128,6 +131,8 @@
 				FBBDC18D249BAD6600D99A07 /* eventHandler.hpp */,
 				FB6F2A5F24B211A90083C23D /* gameSettings.cpp */,
 				FB6F2A6024B211A90083C23D /* gameSettings.hpp */,
+				FB123AB124B50EEA0031CA35 /* gameEventHandler.cpp */,
+				FB123AB224B50EEA0031CA35 /* gameEventHandler.hpp */,
 			);
 			path = Voksel;
 			sourceTree = "<group>";
@@ -218,6 +223,7 @@
 				FBA60EC124B0D2BA0015964A /* sprite.cpp in Sources */,
 				FB6F2A6124B211A90083C23D /* gameSettings.cpp in Sources */,
 				FBBDC189249BA04F00D99A07 /* display.cpp in Sources */,
+				FB123AB324B50EEA0031CA35 /* gameEventHandler.cpp in Sources */,
 				FB28A24524B0818900527044 /* renderer.cpp in Sources */,
 				FB3E5F6624996B4F000833A2 /* main.cpp in Sources */,
 				FB774079249BC402005C09C1 /* game.cpp in Sources */,

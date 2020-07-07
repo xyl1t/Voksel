@@ -19,29 +19,29 @@ public:
     
     void Update();
     
-    bool IsKeyDown(int key);
-    bool IsKeyUp(int key);
-    bool IsKeyPressed(int key);
-    inline int GetMouseX() {
+    bool IsKeyDown(int key) const;
+    bool IsKeyUp(int key) const;
+    bool IsKeyPressed(int key) const;
+    inline int GetMouseX() const {
         return mouseX;
     }
-    inline int GetMouseY() {
+    inline int GetMouseY() const {
         return mouseY;
     }
-    inline int GetMouseXRel() {
+    inline int GetMouseXRel() const {
         return mouseXRel;
     }
-    inline int GetMouseYRel() {
+    inline int GetMouseYRel() const {
         return mouseYRel;
     }
-    inline bool IsLeftMouseDown() {
+    inline bool IsLeftMouseDown() const {
         return isLeftMouseDown;
     }
-    inline bool IsRightMouseDown() {
+    inline bool IsRightMouseDown() const {
         return isRightMouseDown;
     }
     //bool IsMiddleMouseDown();
-    bool IsEvent(uint32_t eventType);
+    bool IsEvent(uint32_t eventType) const;
     
     ~EventHandler();
 
