@@ -46,7 +46,7 @@ void Renderer::DrawFrame(RGB* colormap, uint8_t* heightmap, int mapWidth, int ma
         float distbetweenpoints = sqrt(pow(rightPoint.x - leftPoint.x, 2) + pow(rightPoint.y - leftPoint.y, 2));
 
         opt = i / (float)Settings::renderDistance;
-        float numb = util_lerp(1, 1, opt);
+        float numb = util::lerp(1, 1, opt);
         float dx = (rightPoint.x - leftPoint.x) / (screenWidth);
         float dy = (rightPoint.y - leftPoint.y) / (screenWidth);
 
@@ -91,9 +91,9 @@ void Renderer::DrawFrame(RGB* colormap, uint8_t* heightmap, int mapWidth, int ma
             RGB groundColor = colormap[((uint32_t)(leftPoint.x) % mapWidth) + ( (uint32_t)(leftPoint.y) % mapHeight * mapWidth)];
             RGB skyColor = { 0xDC,0xD8,0xaD };
             RGB result;
-            result.r = util_lerp(skyColor.r, groundColor.r, f);
-            result.g = util_lerp(skyColor.g, groundColor.g, f);
-            result.b = util_lerp(skyColor.b, groundColor.b, f);
+            result.r = util::lerp(skyColor.r, groundColor.r, f);
+            result.g = util::lerp(skyColor.g, groundColor.g, f);
+            result.b = util::lerp(skyColor.b, groundColor.b, f);
             
             /*
              * tilt screen (roll):
