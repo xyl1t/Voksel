@@ -44,7 +44,7 @@ public:
     inline const std::string& GetTile() {
         return title;
     }
-    inline uint32_t*& GetPixels() {
+    inline uint32_t* GetPixels() {
         return this->pixels;
     }
     inline bool IsClosed() {

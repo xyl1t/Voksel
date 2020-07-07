@@ -16,31 +16,30 @@
 using namespace tem;
 
 int main(int argc, char** argv) {
-    
-//    mat3x3 mat = mat3x3(1.0f);
-//
-//    mat.rotate(M_PI / 2);
-//
-//    for (int i = 0; i < 3; i++) {
-//        for (int j = 0; j < 3; j++) {
-//            std::cout << mat[i + j * 3] << " ";
-//        }
-//        std::cout << std::endl;
-//    }
-//
-    
     SDL_Init(SDL_INIT_EVERYTHING);
-
+    
     Display display(800, 600, "Voksel");
-    Game game(display, { 300, 200, 150.f }, 1000);
-
+    Game game(display);
+    
+    float currentTime = 0.f;
+    float previousTime = 0.f;
+    float delta = 0.f;
+    int timer = 0;
     while(!display.IsClosed()) {
 
-        game.Update();
+        currentTime = SDL_GetTicks();
+        delta = currentTime - previousTime;
+        previousTime = currentTime;
+        if(currentTime / 1000 > timer) {
+            std::clog << "FPS: " << 1000.f / delta  << std::endl;
+            timer++;
+        }
 
+        game.Update(delta);
+        game.Render();
+        
     }
-
-    SDL_Quit();
+    
     
     return 0;
 }

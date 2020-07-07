@@ -12,6 +12,7 @@
 
 Display::Display(int width, int height, const std::string& title) : width(width), height(height), title(title), eventHandler(EventHandler::GetInstance()) {
     
+    this->pixels = nullptr;
     if(!SDL_WasInit(SDL_INIT_EVERYTHING)) {
         isInit = false;
         return;
@@ -27,34 +28,36 @@ Display::Display(int width, int height, const std::string& title) : width(width)
     this->pixels = new uint32_t[width * height];
     memset(pixels, 0, width*height*sizeof(uint32_t));
     
+//    int pitch = 0;
+//    SDL_LockTexture(texture, nullptr, (void**)&this->pixels, &pitch);
+    
+    
     isClosed = false;
-    
-    
-    
     isInit = true;
 }
 
 Display::~Display() {
-//    delete[] pixels;
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    delete[] pixels;
 }
 
 
 void Display::Update() {
     eventHandler.Update();
     
-    SDL_UnlockTexture(texture);
     
+//    SDL_UnlockTexture(texture);
+
+    SDL_UpdateTexture(texture, NULL, pixels, width * sizeof(uint32_t));
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
     
-    int pitch = 0;
-    SDL_LockTexture(texture, nullptr, (void**)&this->pixels, &pitch);
-    
-    
+//    int pitch = 0;
+//    SDL_LockTexture(texture, nullptr, (void**)&this->pixels, &pitch);
+
     if(eventHandler.IsEvent(SDL_QUIT)) {
         isClosed = true;
     }

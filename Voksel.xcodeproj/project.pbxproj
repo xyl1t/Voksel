@@ -7,11 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB233E5624AC9D9A00FD4748 /* player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB233E5424AC9D9A00FD4748 /* player.cpp */; };
+		FB28A24524B0818900527044 /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB28A24324B0818900527044 /* renderer.cpp */; };
+		FB3642E624AF5FCD001F479B /* libSDL2main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB3642E324AF5FCC001F479B /* libSDL2main.a */; };
+		FB3642E724AF5FCD001F479B /* libSDL2_test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB3642E424AF5FCD001F479B /* libSDL2_test.a */; };
+		FB3642E824AF5FCD001F479B /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB3642E524AF5FCD001F479B /* libSDL2.a */; };
 		FB3E5F6624996B4F000833A2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB3E5F6524996B4F000833A2 /* main.cpp */; };
 		FB3E5F6E24996B7A000833A2 /* libSDL2-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FB3E5F6D24996B7A000833A2 /* libSDL2-2.0.0.dylib */; };
+		FB6F2A6124B211A90083C23D /* gameSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB6F2A5F24B211A90083C23D /* gameSettings.cpp */; };
 		FB774079249BC402005C09C1 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB774077249BC402005C09C1 /* game.cpp */; };
 		FB95693D249FF219001DF4EA /* tensorMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB95693B249FF219001DF4EA /* tensorMath.cpp */; };
 		FBA12EEF249BCF54007CD174 /* color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBA12EED249BCF54007CD174 /* color.cpp */; };
+		FBA60EBE24B0CF120015964A /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBA60EBC24B0CF120015964A /* util.cpp */; };
+		FBA60EC124B0D2BA0015964A /* sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBA60EBF24B0D2BA0015964A /* sprite.cpp */; };
 		FBBDC189249BA04F00D99A07 /* display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBBDC187249BA04F00D99A07 /* display.cpp */; };
 		FBBDC18E249BAD6600D99A07 /* eventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBBDC18C249BAD6600D99A07 /* eventHandler.cpp */; };
 /* End PBXBuildFile section */
@@ -29,15 +37,31 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FB233E5424AC9D9A00FD4748 /* player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = player.cpp; sourceTree = "<group>"; };
+		FB233E5524AC9D9A00FD4748 /* player.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = player.hpp; sourceTree = "<group>"; };
+		FB28A24324B0818900527044 /* renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = renderer.cpp; sourceTree = "<group>"; };
+		FB28A24424B0818900527044 /* renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = renderer.hpp; sourceTree = "<group>"; };
+		FB3642E324AF5FCC001F479B /* libSDL2main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2main.a; path = ../../../../../../../../../usr/local/Cellar/sdl2/2.0.12_1/lib/libSDL2main.a; sourceTree = "<group>"; };
+		FB3642E424AF5FCD001F479B /* libSDL2_test.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2_test.a; path = ../../../../../../../../../usr/local/Cellar/sdl2/2.0.12_1/lib/libSDL2_test.a; sourceTree = "<group>"; };
+		FB3642E524AF5FCD001F479B /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = ../../../../../../../../../usr/local/Cellar/sdl2/2.0.12_1/lib/libSDL2.a; sourceTree = "<group>"; };
 		FB3E5F6224996B4F000833A2 /* Voksel */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Voksel; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB3E5F6524996B4F000833A2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		FB3E5F6D24996B7A000833A2 /* libSDL2-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libSDL2-2.0.0.dylib"; path = "../../../../../../../../../usr/local/Cellar/sdl2/2.0.12_1/lib/libSDL2-2.0.0.dylib"; sourceTree = "<group>"; };
+		FB6F2A5F24B211A90083C23D /* gameSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gameSettings.cpp; sourceTree = "<group>"; };
+		FB6F2A6024B211A90083C23D /* gameSettings.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gameSettings.hpp; sourceTree = "<group>"; };
 		FB774077249BC402005C09C1 /* game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
 		FB774078249BC402005C09C1 /* game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game.hpp; sourceTree = "<group>"; };
 		FB95693B249FF219001DF4EA /* tensorMath.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tensorMath.cpp; sourceTree = "<group>"; };
 		FB95693C249FF219001DF4EA /* tensorMath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tensorMath.hpp; sourceTree = "<group>"; };
 		FBA12EED249BCF54007CD174 /* color.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = color.cpp; sourceTree = "<group>"; };
 		FBA12EEE249BCF54007CD174 /* color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = color.hpp; sourceTree = "<group>"; };
+		FBA60EBC24B0CF120015964A /* util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = util.cpp; sourceTree = "<group>"; };
+		FBA60EBD24B0CF120015964A /* util.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = util.hpp; sourceTree = "<group>"; };
+		FBA60EBF24B0D2BA0015964A /* sprite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sprite.cpp; sourceTree = "<group>"; };
+		FBA60EC024B0D2BA0015964A /* sprite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sprite.hpp; sourceTree = "<group>"; };
+		FBA60EC424B0E1FE0015964A /* C13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C13.png; sourceTree = "<group>"; };
+		FBA60EC524B0E1FE0015964A /* D13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = D13.png; sourceTree = "<group>"; };
+		FBA60EC624B123DD0015964A /* paper.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = paper.txt; sourceTree = "<group>"; };
 		FBBDC185249B919900D99A07 /* C1W.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C1W.png; sourceTree = "<group>"; };
 		FBBDC186249B919900D99A07 /* D1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = D1.png; sourceTree = "<group>"; };
 		FBBDC187249BA04F00D99A07 /* display.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = display.cpp; sourceTree = "<group>"; };
@@ -51,6 +75,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB3642E624AF5FCD001F479B /* libSDL2main.a in Frameworks */,
+				FB3642E724AF5FCD001F479B /* libSDL2_test.a in Frameworks */,
+				FB3642E824AF5FCD001F479B /* libSDL2.a in Frameworks */,
 				FB3E5F6E24996B7A000833A2 /* libSDL2-2.0.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -61,6 +88,7 @@
 		FB3E5F5924996B4F000833A2 = {
 			isa = PBXGroup;
 			children = (
+				FBA60EC624B123DD0015964A /* paper.txt */,
 				FB3E5F6424996B4F000833A2 /* Voksel */,
 				FB3E5F6324996B4F000833A2 /* Products */,
 				FB3E5F6C24996B79000833A2 /* Frameworks */,
@@ -82,14 +110,24 @@
 				FB3E5F6524996B4F000833A2 /* main.cpp */,
 				FB774077249BC402005C09C1 /* game.cpp */,
 				FB774078249BC402005C09C1 /* game.hpp */,
-				FBBDC187249BA04F00D99A07 /* display.cpp */,
 				FB95693B249FF219001DF4EA /* tensorMath.cpp */,
+				FB233E5424AC9D9A00FD4748 /* player.cpp */,
+				FB233E5524AC9D9A00FD4748 /* player.hpp */,
+				FB28A24324B0818900527044 /* renderer.cpp */,
+				FB28A24424B0818900527044 /* renderer.hpp */,
+				FBA60EBC24B0CF120015964A /* util.cpp */,
+				FBA60EBD24B0CF120015964A /* util.hpp */,
+				FBA60EBF24B0D2BA0015964A /* sprite.cpp */,
+				FBA60EC024B0D2BA0015964A /* sprite.hpp */,
 				FB95693C249FF219001DF4EA /* tensorMath.hpp */,
+				FBBDC187249BA04F00D99A07 /* display.cpp */,
 				FBBDC188249BA04F00D99A07 /* display.hpp */,
 				FBA12EED249BCF54007CD174 /* color.cpp */,
 				FBA12EEE249BCF54007CD174 /* color.hpp */,
 				FBBDC18C249BAD6600D99A07 /* eventHandler.cpp */,
 				FBBDC18D249BAD6600D99A07 /* eventHandler.hpp */,
+				FB6F2A5F24B211A90083C23D /* gameSettings.cpp */,
+				FB6F2A6024B211A90083C23D /* gameSettings.hpp */,
 			);
 			path = Voksel;
 			sourceTree = "<group>";
@@ -97,6 +135,9 @@
 		FB3E5F6C24996B79000833A2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FB3642E424AF5FCD001F479B /* libSDL2_test.a */,
+				FB3642E524AF5FCD001F479B /* libSDL2.a */,
+				FB3642E324AF5FCC001F479B /* libSDL2main.a */,
 				FB3E5F6D24996B7A000833A2 /* libSDL2-2.0.0.dylib */,
 			);
 			name = Frameworks;
@@ -105,6 +146,8 @@
 		FBBDC184249B912B00D99A07 /* res */ = {
 			isa = PBXGroup;
 			children = (
+				FBA60EC424B0E1FE0015964A /* C13.png */,
+				FBA60EC524B0E1FE0015964A /* D13.png */,
 				FBBDC185249B919900D99A07 /* C1W.png */,
 				FBBDC186249B919900D99A07 /* D1.png */,
 			);
@@ -170,10 +213,15 @@
 			files = (
 				FB95693D249FF219001DF4EA /* tensorMath.cpp in Sources */,
 				FBA12EEF249BCF54007CD174 /* color.cpp in Sources */,
+				FBA60EBE24B0CF120015964A /* util.cpp in Sources */,
 				FBBDC18E249BAD6600D99A07 /* eventHandler.cpp in Sources */,
+				FBA60EC124B0D2BA0015964A /* sprite.cpp in Sources */,
+				FB6F2A6124B211A90083C23D /* gameSettings.cpp in Sources */,
 				FBBDC189249BA04F00D99A07 /* display.cpp in Sources */,
+				FB28A24524B0818900527044 /* renderer.cpp in Sources */,
 				FB3E5F6624996B4F000833A2 /* main.cpp in Sources */,
 				FB774079249BC402005C09C1 /* game.cpp in Sources */,
+				FB233E5624AC9D9A00FD4748 /* player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +340,7 @@
 		FB3E5F6A24996B4F000833A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = (
@@ -305,6 +354,7 @@
 		FB3E5F6B24996B4F000833A2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = (

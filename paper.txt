@@ -1,3 +1,4 @@
+
 //
 //  game.cpp
 //  Voksel
@@ -12,11 +13,8 @@
 #include <stb/stb_image.h>
 #include <cmath>
 #include <cstdint>
-#include <algorithm>
-
-#include "gameSettings.hpp"
 #include "tensorMath.hpp"
-#include "util.hpp"
+#include <algorithm>
 using namespace tem;
 
 /*
@@ -25,18 +23,21 @@ using namespace tem;
  3. fly down on the temple
  */
 
-Game::Game(Display& display)
-    : display (display),
-    renderer (display.GetWidth(), display.GetHeight(), display.GetPixels()),
-    player()
-{
-    player.position = Settings::spawnPoint;
-    player.angularPosition.x = 300;
-    distance = Settings::renderDistance;
-    
+
+static float util_lerp(float a, float b, float t) {
+    return a + (b - a) * t;
+}
+
+Game::Game(Display& display, vec3 spawnPoint, int distance) : display(display), playerPosition(spawnPoint), playerAngleYaw(135.f * M_PI/180), playerAnglePitch(300), distance(distance), minimapWidth(128), minimapHeight(128) {
     int nrChannels;
     uint8_t* rawColormap = stbi_load("/Users/maratisaw/Home/Documents/Programming/C++/Projects/SDL/Voksel/Voksel/res/C13.png", &mapWidth, &mapHeight, &nrChannels, 0);
     uint8_t* rawHeightmap = stbi_load("/Users/maratisaw/Home/Documents/Programming/C++/Projects/SDL/Voksel/Voksel/res/D13.png", &mapWidth, &mapHeight, &nrChannels, 0);
+    
+    
+    this->pixelWidth = mapWidth / minimapWidth;
+    this->pixelHeight = mapHeight / minimapHeight;
+    
+    std::cout << nrChannels << std::endl;
     
     colormap = new RGB[mapWidth * mapHeight];
     heightmap = new uint8_t[mapWidth * mapHeight];
@@ -54,8 +55,6 @@ Game::Game(Display& display)
     
     stbi_image_free(rawColormap);
     stbi_image_free(rawHeightmap);
-        
-
 }
 
 Game::~Game() {
@@ -73,8 +72,8 @@ Game::~Game() {
 
 
 void Game::Update(float elapsedTime) {
-    float cosAngle = cos(player.angularPosition.y);
-    float sinAngle = sin(player.angularPosition.y);
+    float cosAngle = cos(playerAngleYaw);
+    float sinAngle = sin(playerAngleYaw);
     
     if(tiltFront > -0.01 && tiltFront < 0.01) tiltFront = 0;
     if(tiltSide > -0.1 && tiltSide < 0.1) tiltSide = 0;
@@ -95,8 +94,8 @@ void Game::Update(float elapsedTime) {
     else if(tiltFront < 0) {
         tiltFront += .1f;
     }
-    player.position.x += sinAngle * 3 * tiltFront * elapsedTime / 25.f;
-    player.position.y += -cosAngle * 3 * tiltFront * elapsedTime / 25.f;
+    playerPosition.x += sinAngle * 3 * tiltFront * elapsedTime / 25.f;
+    playerPosition.y += -cosAngle * 3 * tiltFront * elapsedTime / 25.f;
 
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_A)) {
         if(tiltSide < 1)
@@ -113,19 +112,19 @@ void Game::Update(float elapsedTime) {
         tiltSide += .1f;
     }
 
-    player.angularPosition.y -= M_PI / 55.f * tiltSide * elapsedTime / 20.f;
+    playerAngleYaw -= M_PI / 55.f * tiltSide * elapsedTime / 20.f;
     
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_SPACE)) {
-        player.position.z += 3;
+        playerPosition.z += 10;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_LSHIFT)) {
-        player.position.z -= 3;
+        playerPosition.z -= 10;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_Q)) {
-        player.angularPosition.x -= 10;
+        playerAnglePitch -= 10;
     }
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_E)) {
-        player.angularPosition.x += 10;
+        playerAnglePitch += 10;
     }
 
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_1)) {
@@ -153,147 +152,110 @@ void Game::Update(float elapsedTime) {
         distance -= 1;
     }
     
-    double a = 0;
-    double val = 0;
-    for (int i = -30; i < 31; i++) {
-        for (int j = -30; j < 31; j++) {
-            if(i * i + j * j <= 30 * 30) {
-                float sat = pow(1.f - sqrt(i * i + j * j) / 30.f, 1);
-                val += getHeightmapValue(player.position.x + i, player.position.y + j)*sat;
-                a += sat;
+    if(playerPosition.z <= heightmap[((uint32_t)(playerPosition.x) % mapWidth) + ((uint32_t)(playerPosition.y) % mapHeight * mapWidth)] + 10) {
+        playerPosition.z = heightmap[((uint32_t)(playerPosition.x) % mapWidth) + ((uint32_t)(playerPosition.y) % mapHeight * mapWidth)] + 10;
+    }
+
+    
+    display.Clear();
+
+    float start = distance / 10;
+    float end = distance;
+    
+    for (int i = 0; i < mapWidth; i++) {
+        zBuffer[i] = display.GetHeight();
+    }
+    float di = 1.f;
+    float opt = 0;
+    for (float i = 1; i < distance; i += 1, di += 0.0075f) {
+        vec2 leftPoint = {
+            (-i * cosAngle + -i * (-sinAngle)) + playerPosition.x,
+            (-i * sinAngle + -i * cosAngle)+ playerPosition.y
+        };
+        vec2 rightPoint = {
+            (+i * cosAngle + -i * (-sinAngle))+ playerPosition.x,
+            (+i * sinAngle + -i * cosAngle)+ playerPosition.y
+        };
+        
+        float distbetweenpoints = sqrt(std::pow(rightPoint.x - leftPoint.x, 2) + std::pow(rightPoint.y - leftPoint.y, 2));
+        
+        opt = i / (float)distance;
+        float numb = util_lerp(1, 1, opt);
+        float dx = (rightPoint.x - leftPoint.x) / (display.GetWidth());
+        float dy = (rightPoint.y - leftPoint.y) / (display.GetWidth());
+        
+        if(dx == 0 && dy == 0) continue;
+
+        for(int j = 0; j < display.GetWidth(); j++) {
+
+            float distbetweenpoints = sqrt(std::pow(rightPoint.x - leftPoint.x, 2) + std::pow(rightPoint.y - leftPoint.y, 2));
+            float distance = sqrt(std::pow(i, 2) +
+                                  std::pow(j / (float)display.GetWidth() * distbetweenpoints - distbetweenpoints / 2, 2) +
+                                  std::pow(playerPosition.z, 2));
+
+//            float f = (end - distance) / (end - start);
+            float density = 0.002f;
+            float gradient = 3;
+            float f = 1.f / std::pow(EulerConstant, std::pow((distance * density), gradient));
+//            float f = 1.f / 1 * std::pow(cosf(distance/mapWidth), 5);
+            f = (f < 0) ? 0 : f;
+            f = (f > 1) ? 1 : f;
+//            f = 1;
+            f = (int)(f + 0.5);
+            RGB groundColor = colormap[((uint32_t)(leftPoint.x) % mapWidth) + ( (uint32_t)(leftPoint.y) % mapHeight * mapWidth)];
+            RGB skyColor = { 0xDC,0xD8,0xaD };
+            RGB result;
+            result.r = util_lerp(skyColor.r, groundColor.r, f);
+            result.g = util_lerp(skyColor.g, groundColor.g, f);
+            result.b = util_lerp(skyColor.b, groundColor.b, f);
+
+//            display.SetPixel(
+//                             newLeftPoint.x,
+//                             newLeftPoint.y, (RGB) {
+//                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth],
+//                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth],
+//                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]});
+//            int a =(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth;
+            display.SetPixel(
+                             leftPoint.x / 3,
+                             leftPoint.y / 3, result);
+            
+            if(!(j % (int)numb)) {
+                leftPoint.x += dx * (int)numb;
+                leftPoint.y += dy * (int)numb;
             }
-        }
-    }
-    val /= (double)a;
-    
-    
-    if(player.position.z <= val + 50) {
-        player.position.z = val + 50;
-    }
+            
+            continue;
+            float h = heightmap[((uint32_t)(leftPoint.x) % mapWidth) + ((uint32_t)(leftPoint.y) % mapHeight * mapWidth)];
 
-    
-//    display.Clear(RGB{ 0xDC,0xD8,0xaD });
+//            float hb = heightmap[((uint32_t)(leftPoint.x - sinAngle) % mapWidth) + ((uint32_t)(leftPoint.y - -cosAngle) % mapHeight * mapWidth)];
 //
-//    float start = distance / 10;
-//    float end = distance;
-//    
-//    for (int i = 0; i < mapWidth; i++) {
-//        zBuffer[i] = display.GetHeight();
-//    }
-//    float di = 1.f;
-//    float opt = 0;
-//    for (float i = 1; i < distance; i += (di), di += 0.0075f) {
-//        vec2 leftPoint = {
-//            (-i * cosAngle + -i * (-sinAngle)) + player.position.x,
-//            (-i * sinAngle + -i * cosAngle)+ player.position.y
-//        };
-//        vec2 rightPoint = {
-//            (+i * cosAngle + -i * (-sinAngle))+ player.position.x,
-//            (+i * sinAngle + -i * cosAngle)+ player.position.y
-//        };
-//
-//        float distbetweenpoints = sqrt(std::pow(rightPoint.x - leftPoint.x, 2) + std::pow(rightPoint.y - leftPoint.y, 2));
-//
-//        opt = i / (float)distance;
-//        float numb = util_lerp(1, 1, opt);
-//        float dx = (rightPoint.x - leftPoint.x) / (display.GetWidth());
-//        float dy = (rightPoint.y - leftPoint.y) / (display.GetWidth());
-//        
-//        if(dx == 0 && dy == 0) continue;
-//
-//        for(int j = 0; j < display.GetWidth(); j++) {
-////            display.SetPixel(
-////                             newLeftPoint.x,
-////                             newLeftPoint.y, (RGB) {
-////                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth],
-////                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth],
-////                heightmap[(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth]});
-////            int a =(int)newLeftPoint.x + (int)newLeftPoint.y * mapWidth;
-////            display.SetPixel(
-////                             newLeftPoint.x / 3,
-////                             newLeftPoint.y / 3, colormap[((int)abs(newLeftPoint.x) % mapWidth) + ((int)abs(newLeftPoint.y) % mapHeight * mapWidth)]);
-//            if(!(j % (int)numb)) {
-//                leftPoint.x += dx * (int)numb;
-//                leftPoint.y += dy * (int)numb;
-//            }
-//            
-//            float h = heightmap[((uint32_t)(leftPoint.x) % mapWidth) + ((uint32_t)(leftPoint.y) % mapHeight * mapWidth)];
-//
-////            float hb = heightmap[((uint32_t)(leftPoint.x - sinAngle) % mapWidth) + ((uint32_t)(leftPoint.y - -cosAngle) % mapHeight * mapWidth)];
-////
-////            float ha = heightmap[((uint32_t)(leftPoint.x + sinAngle) % mapWidth) + ((uint32_t)(leftPoint.y + -cosAngle) % mapHeight * mapWidth)];
-//            
-//            float height_on_screen = (float)((player.position.z - h)) / (float)(i) * 250.0f + 100 * -tiltFront/2 + player.angularPosition.x;
-//
-//            float distance = sqrt(std::pow(i, 2) +
-//                                  std::pow(j / (float)display.GetWidth() * distbetweenpoints - distbetweenpoints / 2, 2) +
-//                                  std::pow(player.position.z, 2));
-//            
-////            float f = (end - distance) / (end - start);
-//            float density = 0.002f;
-//            float gradient = 3;
-//            float f = 1.f / std::pow(EulerConstant, std::pow((distance * density), gradient));
-////            float f = 1.f / 1 * std::pow(cosf(distance/mapWidth), 5);
-//            f = (f < 0) ? 0 : f;
-//            f = (f > 1) ? 1 : f;
-////            f = 1;
-//            RGB groundColor = colormap[((uint32_t)(leftPoint.x) % mapWidth) + ( (uint32_t)(leftPoint.y) % mapHeight * mapWidth)];
-//            RGB skyColor = { 0xDC,0xD8,0xaD };
-//            RGB result;
-//            result.r = util_lerp(skyColor.r, groundColor.r, f);
-//            result.g = util_lerp(skyColor.g, groundColor.g, f);
-//            result.b = util_lerp(skyColor.b, groundColor.b, f);
-//            
-//            /*
-//             * tilt screen (roll):
-//             * height_on_screen - j / 10
-//             * or
-//             * height_on_screen + j / 10
-//             */
-//            
-//            
-//            drawLineDown(j, height_on_screen + (j - display.GetWidth() / 2) / 10 * tiltSide, zBuffer[j], result);
-//            
-//            if(height_on_screen + (j - display.GetWidth() / 2) / 10 * tiltSide < zBuffer[j]) {
-//                zBuffer[j] = height_on_screen + (j - display.GetWidth() / 2) / 10 * tiltSide;
-//            }
-//        }
-//    }
-//    
-//    display.Update();
-}
+//            float ha = heightmap[((uint32_t)(leftPoint.x + sinAngle) % mapWidth) + ((uint32_t)(leftPoint.y + -cosAngle) % mapHeight * mapWidth)];
+            
+            float height_on_screen = (float)((playerPosition.z - h)) / (float)(i) * 250.0f + 100 * -tiltFront/2 + playerAnglePitch;
 
-void Game::Render() {
-    display.Clear(RGB{ 0xDC,0xD8,0xaD });
-//    for (int j = 0; j < 100; j++)
-//    for(int i = 0; i < display.GetWidth() * display.GetHeight();i++)
-//        renderer.SetPixel(i % display.GetWidth(), i/display.GetWidth(), (RGB){0,255,0});
-    renderer.DrawFrame(colormap, heightmap, mapWidth, mapHeight, player, Settings::renderDistance, player.angularPosition.x);
-
-//    float cosAngle = cos(-player.angularPosition.y + (0 * (180 / M_PI)));
-//    float sinAngle = sin(+player.angularPosition.y - (0 * (180 / M_PI)));
-
-    float val = 0;
-    for (int i = -100; i < 100; i++) {
-        for (int j = -100; j < 100; j++) {
-            if(i * i + j * j <= 100 * 100) {
-                float sat = pow(1.f - sqrt(i * i + j * j) / 100.f, 1);
-                val = (getHeightmapValue(player.position.x + i, player.position.y + j))/ 255.f;
-                sat *= val * 2;
-                sat += (val * 255 - player.position.z / 3) / 255.f;
-                sat = sat > 1 ? 1 : sat;
-                sat = sat < 0 ? 0 : sat;
-
-
-//                int ni = (i * cosAngle + j * (sinAngle));
-//                int nj = (i * -sinAngle + j * cosAngle);
-
-                renderer.SetPixel(i + 100, j + 100, RGB{0, (uint8_t)(sat * 255),0});
+            
+            
+            /*
+             * tilt screen (roll):
+             * height_on_screen - j / 10
+             * or
+             * height_on_screen + j / 10
+             */
+            
+            
+            drawLineDown(j, height_on_screen + (j - display.GetWidth() / 2) / 10 * tiltSide, zBuffer[j], result);
+            
+            if(height_on_screen + (j - display.GetWidth() / 2) / 10 * tiltSide < zBuffer[j]) {
+                zBuffer[j] = height_on_screen + (j - display.GetWidth() / 2) / 10 * tiltSide;
             }
         }
     }
     
     display.Update();
+}
+
+void Game::Render() {
 }
 
 void Game::drawLineDown(int x, int y, float z, RGB color) {
@@ -392,8 +354,8 @@ void Game::drawLineDown(int x, int y, float z, RGB color) {
      ex = std::max(ex, p.x);
      ey = std::max(ey, p.y);
 
-     int playerX = player.position.x;
-     int playerY = player.position.y;
+     int playerX = playerPosition.x;
+     int playerY = playerPosition.y;
 
      while (playerX < 0)
          playerX += mapWidth-1;
