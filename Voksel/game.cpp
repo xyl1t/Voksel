@@ -22,7 +22,8 @@ using namespace tem;
 Game::Game(Display& display)
     : display (display),
     renderer (display.GetWidth(), display.GetHeight(), display.GetPixels()),
-    player()
+    player(),
+    gameEventHandler()
 {
     player.position = Settings::spawnPoint;
     player.angularPosition.x = 300;
@@ -67,61 +68,63 @@ Game::~Game() {
 
 
 void Game::Update(float elapsedTime) {
-    float cosAngle = cos(player.angularPosition.y);
-    float sinAngle = sin(player.angularPosition.y);
+//    float cosAngle = cos(player.angularPosition.y);
+//    float sinAngle = sin(player.angularPosition.y);
+//
+//    if(tiltFront > -0.01 && tiltFront < 0.01) tiltFront = 0;
+//    if(tiltSide > -0.1 && tiltSide < 0.1) tiltSide = 0;
+//
+//    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_W)) {
+//        if(tiltFront < 1) {
+//            tiltFront += .1f;
+//        }
+//    }
+//    else if(tiltFront > 0) {
+//        tiltFront -= .1f;
+//    }
+//    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_S)) {
+//        if(abs(tiltFront) < 1) {
+//            tiltFront -= 0.1f;
+//        }
+//    }
+//    else if(tiltFront < 0) {
+//        tiltFront += .1f;
+//    }
+//    player.position.x += sinAngle * 3 * tiltFront * elapsedTime / 25.f;
+//    player.position.y += -cosAngle * 3 * tiltFront * elapsedTime / 25.f;
+//
+//    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_A)) {
+//        if(tiltSide < 1)
+//            tiltSide += .1f;
+//    }
+//    else if(tiltSide > 0) {
+//        tiltSide -= .1f;
+//    }
+//    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_D)) {
+//        if(abs(tiltSide) < 1)
+//            tiltSide -= .1f;
+//    }
+//    else if(tiltSide < 0) {
+//        tiltSide += .1f;
+//    }
+//
+//    player.angularPosition.y -= M_PI / 55.f * tiltSide * elapsedTime / 20.f;
+//
+//    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_SPACE)) {
+//        player.position.z += 3;
+//    }
+//    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_LSHIFT)) {
+//        player.position.z -= 3;
+//    }
+//    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_Q)) {
+//        player.angularPosition.x -= 10;
+//    }
+//    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_E)) {
+//        player.angularPosition.x += 10;
+//    }
     
-    if(tiltFront > -0.01 && tiltFront < 0.01) tiltFront = 0;
-    if(tiltSide > -0.1 && tiltSide < 0.1) tiltSide = 0;
+    gameEventHandler.ProcessInput(player, display.GetEventHandler(), elapsedTime);
     
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_W)) {
-        if(tiltFront < 1) {
-            tiltFront += .1f;
-        }
-    }
-    else if(tiltFront > 0) {
-        tiltFront -= .1f;
-    }
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_S)) {
-        if(abs(tiltFront) < 1) {
-            tiltFront -= 0.1f;
-        }
-    }
-    else if(tiltFront < 0) {
-        tiltFront += .1f;
-    }
-    player.position.x += sinAngle * 3 * tiltFront * elapsedTime / 25.f;
-    player.position.y += -cosAngle * 3 * tiltFront * elapsedTime / 25.f;
-
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_A)) {
-        if(tiltSide < 1)
-            tiltSide += .1f;
-    }
-    else if(tiltSide > 0) {
-        tiltSide -= .1f;
-    }
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_D)) {
-        if(abs(tiltSide) < 1)
-            tiltSide -= .1f;
-    }
-    else if(tiltSide < 0) {
-        tiltSide += .1f;
-    }
-
-    player.angularPosition.y -= M_PI / 55.f * tiltSide * elapsedTime / 20.f;
-    
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_SPACE)) {
-        player.position.z += 3;
-    }
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_LSHIFT)) {
-        player.position.z -= 3;
-    }
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_Q)) {
-        player.angularPosition.x -= 10;
-    }
-    if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_E)) {
-        player.angularPosition.x += 10;
-    }
-
     if(display.GetEventHandler().IsKeyDown(SDL_SCANCODE_1)) {
         minimapWidth -= 1;
         pixelWidth = mapWidth / (float)minimapWidth;

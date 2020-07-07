@@ -14,6 +14,7 @@
 #include "color.hpp"
 #include "display.hpp"
 #include "tensorMath.hpp"
+#include "gameEventHandler.hpp"
 #include <cmath>
 using namespace tem;
 
@@ -31,6 +32,7 @@ private:
     Display& display;
     Renderer renderer;
     Player player;
+    GameEventHandler gameEventHandler;
     
     int distance;
     RGB* colormap;
