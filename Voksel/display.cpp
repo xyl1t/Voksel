@@ -78,28 +78,3 @@ void Display::Clear(RGBA color) {
 void Display::Abort() {
     isClosed = true;
 }
-
-//// Setters
-//void Display::SetPixel(int x, int y, uint32_t c) {
-//    this->pixels[x + y * this->width] = c;
-//}
-//
-//// Getters
-//bool Display::IsInit() {
-//    return isInit;
-//}
-//int Display::GetWidth() {
-//    return width;
-//}
-//int Display::GetHeight() {
-//    return height;
-//}
-//const std::string& Display::GetTile() {
-//    return title;
-//}
-//uint32_t*& Display::GetPixels() {
-//    return this->pixels;
-//}
-//bool Display::IsClosed() {
-//    return isClosed;
-//}
