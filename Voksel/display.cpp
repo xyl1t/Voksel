@@ -11,8 +11,6 @@
 #include <iostream>
 
 Display::Display(int width, int height, const std::string& title) : width(width), height(height), title(title), eventHandler(EventHandler::GetInstance()) {
-    
-    this->pixels = nullptr;
     if(!SDL_WasInit(SDL_INIT_EVERYTHING)) {
         isInit = false;
         return;

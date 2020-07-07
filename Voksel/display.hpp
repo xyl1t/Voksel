@@ -32,28 +32,28 @@ public:
         if(x >= 0 && y >= 0 && x < width && y < height)
             this->pixels[x + y * this->width] = color.GetUint32();
     }
-    inline bool IsInit() {
+    inline bool IsInit() const {
         return isInit;
     }
-    inline int GetWidth() {
+    inline int GetWidth() const  {
         return width;
     }
-    inline int GetHeight() {
+    inline int GetHeight() const  {
         return height;
     }
-    inline const std::string& GetTile() {
+    inline const std::string& GetTile() const  {
         return title;
     }
     inline uint32_t* GetPixels() {
         return this->pixels;
     }
-    inline bool IsClosed() {
+    inline bool IsClosed() const  {
         return isClosed;
     }
-    inline SDL_Window* GetWindow() {
+    inline SDL_Window* GetWindow() const  {
         return window;
     }
-    inline EventHandler& GetEventHandler() {
+    inline EventHandler& GetEventHandler() const  {
         return eventHandler;
     }
 
