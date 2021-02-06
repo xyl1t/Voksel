@@ -8,17 +8,17 @@
 
 #include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
-#include <SDL2/SDL.h>
+#include <stb_image.h>
+#include <SDL.h>
 #include "display.hpp"
 #include "game.hpp"
 #include "tensorMath.hpp"
 using namespace tem;
 
 int main(int argc, char** argv) {
-    SDL_Init(SDL_INIT_EVERYTHING);
-    
-    Display display(800, 600, "Voksel");
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+    Display display(810, 610, "Voksel");
     Game game(display);
     
     float currentTime = 0.f;
@@ -34,10 +34,9 @@ int main(int argc, char** argv) {
             std::clog << "FPS: " << 1000.f / delta  << std::endl;
             timer++;
         }
-
-        game.Update(delta);
-        game.Render();
         
+        game.Update(delta / 1000.f);
+        game.Render();
     }
     
     SDL_Quit();

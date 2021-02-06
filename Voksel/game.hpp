@@ -26,8 +26,13 @@ public:
     void Update(float elapsedTime);
     void Render();
     
+    bool LoadMap(const std::string& path, bool customMap);
+
+    RGB SkyColor;
+
     ~Game();
     
+    float minimapZoomLevel;
 private:
     Display& display;
     Renderer renderer;
@@ -42,6 +47,9 @@ private:
     
     inline uint8_t getHeightmapValue(int x, int y) {
         return heightmap[(uint32_t)x % mapWidth + (uint32_t)y % mapHeight * mapWidth];
+    }
+    inline const RGB& geColormapValue(int x, int y) {
+        return colormap[(uint32_t)x % mapWidth + (uint32_t)y % mapHeight * mapWidth];
     }
     
     float tiltFront = 0;

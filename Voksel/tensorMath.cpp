@@ -13,6 +13,17 @@
 
 /* tem::vec2 ==================================================== */
 
+void tem::vec2::setLength(float value) {
+    float ratio = value / length();
+    x = ratio * x;
+    y = ratio * y;
+}
+void tem::vec2::addLength(float value) {
+    setLength(length() + value);
+}
+void tem::vec2::subLength(float value) {
+    setLength(length() - value);
+}
 tem::vec2& tem::vec2::operator=(const tem::vec2& other) {
     this->x = other.x;
     this->y = other.y;
@@ -59,6 +70,18 @@ tem::vec2 tem::vec2::operator/(const float other) {
 
 /* tem::vec3 =================================================================== */
 
+void tem::vec3::setLength(float value) {
+    float ratio = value / length();
+    x = ratio * x;
+    y = ratio * y;
+    z = ratio * z;
+}
+void tem::vec3::addLength(float value) {
+    setLength(length() + value);
+}
+void tem::vec3::subLength(float value) {
+    setLength(length() - value);
+}
 tem::vec3& tem::vec3::operator=(const tem::vec3& other) {
     this->x = other.x;
     this->y = other.y;
@@ -115,6 +138,19 @@ tem::vec3 tem::vec3::operator/(const float other) {
 
 /* tem::vec4 =================================================================== */
 
+void tem::vec4::setLength(float value) {
+    float ratio = value / length();
+    x = ratio * x;
+    y = ratio * y;
+    z = ratio * z;
+    w = ratio * w;
+}
+void tem::vec4::addLength(float value) {
+    setLength(length() + value);
+}
+void tem::vec4::subLength(float value) {
+    setLength(length() - value);
+}
 tem::vec4& tem::vec4::operator=(const tem::vec4& other) {
     this->x = other.x;
     this->y = other.y;

@@ -8,14 +8,16 @@
 
 #ifndef gameEventHandler_hpp
 #define gameEventHandler_hpp
+#include <string>
 #include "eventHandler.hpp"
 #include "player.hpp"
 #include "tensorMath.hpp"
+class Game;
 using namespace tem;
 
 class GameEventHandler {
 public:
-    void ProcessInput(Player& player, const EventHandler& eh, float elapsedTime);
+    void ProcessInput(Game& game, Player& player, const EventHandler& eh, float elapsedTime);
 
 private:
     vec2 mousePrevious;

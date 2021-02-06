@@ -26,7 +26,7 @@ public:
             pixels[x + y * screenWidth] = color.GetUint32();
     }
 
-    void DrawFrame(RGB* colormap, uint8_t* heightmap, int mapWidth, int mapHeight, const Player& player, int renderDistance, int horizon);
+    void DrawFrame(RGB skyColor, RGB* colormap, uint8_t* heightmap, int mapWidth, int mapHeight, const Player& player, int renderDistance, int horizon);
     void DrawRectangle(int x, int y, int w, int h, RGB color);
     
     void DrawSprite(const Sprite& sprite, int x, int y, float xScale, float yScale, float rot);

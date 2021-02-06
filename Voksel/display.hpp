@@ -9,7 +9,7 @@
 #ifndef DISPLAY_HPP
 #define DISPLAY_HPP
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <string>   
 #include "eventHandler.hpp"
 #include "color.hpp"

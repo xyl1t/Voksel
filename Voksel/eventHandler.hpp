@@ -9,7 +9,7 @@
 #ifndef EVENTHANDLER_HPP
 #define EVENTHANDLER_HPP
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 // EventHandler is using Singleton pattern
 class EventHandler {
@@ -53,7 +53,7 @@ private:
     void operator=(EventHandler const&); // Don't implement
     
     // input fields
-    uint8_t prevKeys[284] { 0 };
+    uint8_t prevKeys[SDL_NUM_SCANCODES] { 0 };
     uint8_t* keys;
     int mouseX;
     int mouseY;

@@ -1,0 +1,10 @@
+﻿  renderer.cpp
+C:\Users\Marat\source\repos\Voksel\Voksel\renderer.cpp(26,17): warning C4244:  'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Marat\source\repos\Voksel\Voksel\renderer.cpp(27,15): warning C4244:  'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Marat\source\repos\Voksel\Voksel\renderer.cpp(30,22): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Marat\source\repos\Voksel\Voksel\renderer.cpp(89,34): warning C4244:  '=': conversion from 'float' to 'uint8_t', possible loss of data
+C:\Users\Marat\source\repos\Voksel\Voksel\renderer.cpp(90,34): warning C4244:  '=': conversion from 'float' to 'uint8_t', possible loss of data
+C:\Users\Marat\source\repos\Voksel\Voksel\renderer.cpp(91,34): warning C4244:  '=': conversion from 'float' to 'uint8_t', possible loss of data
+C:\Users\Marat\source\repos\Voksel\Voksel\renderer.cpp(93,92): warning C4244:  '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Marat\source\repos\Voksel\Voksel\renderer.cpp(94,29): warning C4244:  'argument': conversion from 'float' to 'int', possible loss of data
+  Voksel.vcxproj -> C:\Users\Marat\source\repos\Voksel\Debug\Voksel.exe

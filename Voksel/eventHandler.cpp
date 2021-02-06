@@ -8,6 +8,7 @@
 
 #include "eventHandler.hpp"
 
+#include <iostream>
 #include <cstring>
 
 
@@ -29,6 +30,9 @@ void EventHandler::Update() {
     mouseXRel = 0;
     mouseYRel = 0;
     
+    for(int i = 0; i < SDL_NUM_SCANCODES; i++) {
+        prevKeys[i] = keys[i];
+    }
     for(int i = 0; (i < 16) && SDL_PollEvent(&event); i++) {
         eventType[i] = event.type;
 
@@ -37,10 +41,6 @@ void EventHandler::Update() {
             mouseYRel = event.motion.yrel;
         }
     }
-
-    SDL_PumpEvents();
-    memcpy(prevKeys, keys, 284 * sizeof(uint8_t));
-    keys = (uint8_t*)SDL_GetKeyboardState(nullptr);
     
     isLeftMouseDown = SDL_GetMouseState(&mouseX, &mouseY) & SDL_BUTTON(SDL_BUTTON_LEFT);
     isRightMouseDown = SDL_GetMouseState(&mouseX, &mouseY) & SDL_BUTTON(SDL_BUTTON_RIGHT);
@@ -56,7 +56,7 @@ bool EventHandler::IsKeyUp(int key) const {
 }
 
 bool EventHandler::IsKeyPressed(int key) const {
-    return (!prevKeys[key] && keys[key]);
+    return (!(bool)prevKeys[key] && (bool)keys[key]);
 }
 
 
